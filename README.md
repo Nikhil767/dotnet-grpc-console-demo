@@ -4,6 +4,10 @@ Server and client console apps built with **.NET 10** and **gRPC**. Also a quick
 
 ---
 
+![.NET](https://img.shields.io/badge/.NET-10-512BD4?style=for-the-badge&logo=dotnet)
+
+---
+
 ## 1. Project Structure
 
 ```
