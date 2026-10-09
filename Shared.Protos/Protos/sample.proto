@@ -1,0 +1,98 @@
+﻿syntax = "proto3";
+
+// Importing Google Well-Known Types
+import "google/protobuf/timestamp.proto";   // 1. Import
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
+
+package sample; // 2. Package
+
+option csharp_namespace = "Shared.Protos";  // 3. Option
+
+// 4. Standalone Enum Definition
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0; // First element MUST be 0 in proto3
+  ORDER_STATUS_PENDING = 1;
+  ORDER_STATUS_PROCESSING = 2;
+  ORDER_STATUS_COMPLETED = 3;
+  ORDER_STATUS_CANCELLED = 4;
+}
+
+// Nested Message Type
+message Item {
+  string product_id = 1;
+  string product_name = 2;
+  double unit_price = 3;
+  int32 quantity = 4;
+}
+
+// Master Message demonstrating ALL Field Types
+message ComprehensiveOrderRequest {
+  
+  // 1. Scalar Primitives (Implicit Default Values)
+  string order_id = 1;               // Default: ""
+  int64 customer_id = 2;             // Default: 0
+  double total_amount = 3;           // Default: 0.0
+  bool is_priority = 4;              // Default: false
+  bytes signature_blob = 5;          // Raw binary bytes
+
+  // 2. Explicit Nullable Primitives (Generates C# Nullable Types like int?, string?)
+  optional string promo_code = 6;    // Generates nullable string with HasPromoCode check
+  optional int32 discount_percentage = 7; // Generates int? in C#
+
+  // 3. Enum Field
+  OrderStatus status = 8;
+
+  // 4. Collections (Lists / Arrays)
+  repeated Item line_items = 9;       // Generates RepeatedField<Item> (List<Item> in C#)
+  repeated string tags = 10;          // List<string> in C#
+
+  // 5. Dictionary / Map
+  map<string, string> metadata = 11;  // Generates MapField<string, string> (Dictionary in C#)
+
+  // 6. Well-Known Types (Timestamps & Durations)
+  google.protobuf.Timestamp created_at = 12; // Maps to C# Google.Protobuf.WellKnownTypes.Timestamp
+  google.protobuf.Duration SLA_time = 13;    // Maps to C# TimeSpan wrapper
+
+  // 7. Google Wrapper Nullables
+  google.protobuf.Int32Value override_tax_rate = 14; // Can be assigned null in C#
+
+  // 8. OneOf (Mutually Exclusive - Only ONE of these can exist at a time)
+  oneof payment_method {
+    string credit_card_token = 15;
+    string bank_account_number = 16;
+    string crypto_wallet_address = 17;
+  }
+}
+
+  // 5. Message using Imported Types & Enum
+message InventoryCheck {
+  string item_id = 1;
+  ItemStatus status = 2;
+  google.protobuf.Timestamp checked_at = 3;
+}
+
+message DataRequest {
+    string message = 1;
+}
+
+message DataResponse {
+    string message = 1;
+}
+
+message Message {
+    string message_data = 1;
+}
+
+  // 6. Service
+  service SampleService {
+      // 1. Unary RPC
+      rpc VerifyStock (InventoryCheck) returns (InventoryCheck); 
+      // 2. Server Streaming RPC
+      rpc StreamData (DataRequest) returns (stream DataResponse);
+      // 3. Client Streaming RPC
+      rpc UploadData (stream DataRequest) returns (DataResponse);
+      // 4. Bi-Directional Streaming RPC
+      rpc LiveChat (stream Message) returns (stream Message);
+    }
+}
