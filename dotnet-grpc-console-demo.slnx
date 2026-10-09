@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="GrpcClientConsole/GrpcClientConsole.csproj" />
+  <Project Path="GrpcServerConsole/GrpcServerConsole.csproj" />
+  <Project Path="Shared.Protos/Shared.Protos.csproj" />
+</Solution>

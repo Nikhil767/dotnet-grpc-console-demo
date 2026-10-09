@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option csharp_namespace = "Shared.Protos";
+
+package order;
+
+service OrderProcessing {
+  // Unary RPC
+  rpc CreateOrder (CreateOrderRequest) returns (OrderResponse);
+  
+  // Server Streaming RPC
+  rpc StreamOrderStatus (OrderStatusRequest) returns (stream OrderStatusUpdate);
+}
+
+message CreateOrderRequest {
+  string account_id = 1;
+  string symbol = 2;
+  double price = 3;
+  int32 quantity = 4;
+}
+
+message OrderResponse {
+  string order_id = 1;
+  string status = 2;
+  bool is_success = 3;
+}
+
+message OrderStatusRequest {
+  string order_id = 1;
+}
+
+message OrderStatusUpdate {
+  string order_id = 1;
+  string current_status = 2;
+  string timestamp = 3;
+}
