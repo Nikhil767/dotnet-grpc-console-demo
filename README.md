@@ -12,11 +12,11 @@ Server and client console apps built with **.NET 10** and **gRPC**. Also a quick
 
 ```
 dotnet-grpc-console-demo/
-├── GrpcServer/      # ASP.NET Core gRPC server (Kestrel, HTTP/2)
+├── GrpcServerConsole/      # ASP.NET Core gRPC server (Kestrel, HTTP/2)
 │   ├── Protos/      # .proto contract
 │   ├── Services/    # Service implementations
 │   └── Program.cs
-└── GrpcClient/      # Console client (Grpc.Net.Client)
+└── GrpcClientConsole/      # Console client (Grpc.Net.Client)
     ├── Protos/      # Same .proto (client mode)
     └── Program.cs
 ```
@@ -25,9 +25,9 @@ dotnet-grpc-console-demo/
 
 ```bash
 # Terminal 1
-cd GrpcServer && dotnet run
+cd GrpcServerConsole && dotnet run
 # Terminal 2
-cd GrpcClient && dotnet run
+cd GrpcClientConsole && dotnet run
 ```
 
 Requires the .NET 10 SDK (`dotnet --version`).
